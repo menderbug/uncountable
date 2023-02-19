@@ -1,17 +1,13 @@
-import { MantineProvider } from '@mantine/core';
-import TestComponent from './components/TestComponent';
+import { MantineProvider, Button } from "@mantine/core";
+import TestComponent from "./components/TestComponent";
 
 function App() {
-
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-    <div className="App">
-  
-     <TestComponent />
-     
-    </div>
+    <MantineProvider theme={{ colorScheme: 'dark' }}withGlobalStyles withNormalizeCSS>
+      <div className="App">
+        <TestComponent />
+      </div>
     </MantineProvider>
-
   );
 }
 
