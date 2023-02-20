@@ -1,6 +1,6 @@
 import { ScatterChart, XAxis, YAxis, Legend, Scatter } from "recharts";
 import dataset from "../Uncountable Front End Dataset.json";
-import Demo from "./MenuComponent";
+import { NativeSelect } from '@mantine/core';
 
 function TestComponent() {
   var p = {
@@ -12,6 +12,7 @@ function TestComponent() {
   // TODO Object.entries performant for large datasets?
   // TODO consider using an interface
   let arr = Object.entries(dataset)
+  // let inputs = arr.map(exp => exp["inputs"])
 
   // for (let key in dataset) {
   // 	console.log(`${key}: ${dataset[key]}`)
@@ -31,7 +32,11 @@ function TestComponent() {
   return (
     <>
       <h1>Experiments</h1>
-      <Demo/>
+      <NativeSelect
+        data={['React', 'Vue', 'Angular', 'Svelte']}
+        label="Select your favorite framework/library"
+        description="This is anonymous"
+      />
     </>
   );
 }
