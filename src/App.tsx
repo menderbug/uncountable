@@ -1,6 +1,6 @@
 import { AppShell, Navbar, SimpleGrid, MantineProvider, NativeSelect } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import sortBy from 'lodash/sortBy';
 // import TestComponent from "./components/TestComponent";
@@ -9,15 +9,7 @@ import _dataset from "./Uncountable Front End Dataset.json";
 // TODO semicolon style guide
 // TODO see how strongly i should type
 // TODO duplicate experiments
-
-
-// TODO delete this if unnecessary
-// interface RawData {
-//   [name: string]: {
-//     inputs: { [inKeys: string]: number }
-//     outputs: { [outKeys: string]: number }
-//   }
-// }
+// TODO download as excel
 
 interface DataPoint {quantity: string, value: number}
 
@@ -30,8 +22,8 @@ interface ProcessedData {
 }
 
 
-
-function App() {
+// TODO is this type correct?
+function App(): ReactElement {
 
   const [inputVal, setInput] = useState('')
   const [outputVal, setOutput] = useState('')
@@ -84,7 +76,7 @@ function App() {
           description="filler again again"
         />
         <pre>the input is {arr.map(exp => {
-          let a = exp[1].inputs
+          const a = exp[1].inputs
           return a[inputVal as keyof typeof a]
         }).toString()}</pre>
         <DataTable
@@ -130,7 +122,7 @@ function App() {
 
 function parseExperiment(str: string): [number, Dayjs] {
   try {
-    const [date, _, num] = str.split('_')
+    const [date, , num] = str.split('_')
     return [parseInt(num), dayjs(date, 'YYYYMMDD')]
   } catch {
     return [-1, dayjs(null)]
