@@ -3,7 +3,7 @@ import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { ReactElement, useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import sortBy from 'lodash/sortBy';
-// import TestComponent from "./components/TestComponent";
+import { MainMenu } from "./components/NavComponent";
 import _dataset from "./Uncountable Front End Dataset.json";
 
 // TODO semicolon style guide
@@ -61,6 +61,7 @@ function App(): ReactElement {
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }}withGlobalStyles withNormalizeCSS>
       <div className="App">
+        <MainMenu />
         <NativeSelect
           value = {inputVal}
           onChange={(event) => setInput(event.currentTarget.value)}
