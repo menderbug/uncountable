@@ -1,4 +1,4 @@
-import { AppShell, Navbar, Accordion, MantineProvider, NativeSelect } from "@mantine/core";
+import { AppShell, Navbar, SimpleGrid, MantineProvider, NativeSelect } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
@@ -12,14 +12,21 @@ import _dataset from "./Uncountable Front End Dataset.json";
 
 
 // TODO delete this if unnecessary
-interface ExperimentData {
-  [name: string]: {
-    id?: string
-    num?: string
-    date?: Dayjs
-    inputs: { [inKeys: string]: number }
-    outputs: { [outKeys: string]: number }
-  }
+// interface RawData {
+//   [name: string]: {
+//     inputs: { [inKeys: string]: number }
+//     outputs: { [outKeys: string]: number }
+//   }
+// }
+
+interface DataPoint {quantity: string, value: number}
+
+interface ProcessedData {
+  id: string,
+  num: number,    
+  date: Dayjs,
+  inputs: DataPoint[],
+  outputs: DataPoint[]
 }
 
 
@@ -31,21 +38,27 @@ function App() {
 
   // TODO this preprocessing should not occur multiple times
   // consider using lodash union?
-  const dataset: ExperimentData = _dataset
-  const arr = Object.entries(dataset)
+  // const dataset: RawData = _dataset
+  const arr = Object.entries(_dataset)
   var inputs = [...new Set(arr.flatMap(exp => Object.keys(exp[1].inputs)))]
   var outputs = [...new Set(arr.flatMap(exp => Object.keys(exp[1].outputs)))]
+
+  // TODO create two interfaces, the second with no props as data
   
-  const tabulated = arr.map(exp => {
-    exp[1].id = exp[0];
-    [exp[1].num, exp[1].date] = parseExperiment(exp[0]);
-    return exp[1]
+  const tabulated: ProcessedData[] = arr.map(exp => {
+    const [expNum, expDate] = parseExperiment(exp[0]);
+    return {
+     id: exp[0],
+     num: expNum,
+     date: expDate,
+     inputs: Object.entries(exp[1].inputs).map((x): DataPoint => ({quantity: x[0], value: x[1]})),
+     outputs: Object.entries(exp[1].outputs).map((x): DataPoint => ({quantity: x[0], value: x[1]}))
+    }
   })
 
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'name', direction: 'asc' });
   const [records, setRecords] = useState(sortBy(tabulated, 'name'));
 
-  console.log(dataset)
   console.log(tabulated)
 
   useEffect(() => {
@@ -78,7 +91,7 @@ function App() {
           minHeight={150}
           columns={[
             { accessor: 'id', title: "Experiment ID" }, 
-            { accessor: 'num', title: "Experiment Number", sortable: true }, 
+            { accessor: 'num', title: "Experiment Number", render: ({ num }) => num === -1 ? '' : `Experiment ${num}`, sortable: true }, 
             { accessor: 'date', render: ({ date }) => date === undefined ? "N/A" : date.format('MMMM D, YYYY'), sortable: true }
           ]}
           idAccessor='id'
@@ -86,13 +99,24 @@ function App() {
           rowExpansion={{
             allowMultiple: true,
             content: ( {record} ) => (
-              <DataTable
-                columns={[
-                  { accessor: 'inputs', sortable: true },
-                  { accessor: 'outputs', sortable: true }
-                ]}
-                records={ record }
-              />
+              <SimpleGrid cols={2}>
+                <DataTable
+                  minHeight={150}
+                  columns={[
+                    { accessor: 'quantity', sortable: true },
+                    { accessor: 'value', sortable: true }
+                  ]}
+                  records={ record.inputs }
+                />
+                <DataTable
+                  minHeight={150}
+                  columns={[
+                    { accessor: 'quantity', sortable: true },
+                    { accessor: 'value', sortable: true }
+                  ]}
+                  records={ record.outputs }
+                />
+              </SimpleGrid>
             )
           }}
           sortStatus={sortStatus}
@@ -104,15 +128,12 @@ function App() {
   );
 }
 
-function parseExperiment(str: string): [string, Dayjs] {
+function parseExperiment(str: string): [number, Dayjs] {
   try {
     const [date, _, num] = str.split('_')
-    return [
-      `Experiment ${num}`,
-      dayjs(date, 'YYYYMMDD')
-    ]
+    return [parseInt(num), dayjs(date, 'YYYYMMDD')]
   } catch {
-    return [str, dayjs(null)]
+    return [-1, dayjs(null)]
   }
 }
 
