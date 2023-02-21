@@ -1,8 +1,9 @@
-import { AppShell, Navbar, SimpleGrid, MantineProvider, NativeSelect } from "@mantine/core";
+import { MantineProvider, Tabs } from "@mantine/core";
 import { ReactElement, useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
-import { HeaderTabs } from "./components/NavComponent";
 import _dataset from "./Uncountable Front End Dataset.json";
+import { TableComponent } from "./components/TableComponent";
+import { ScatterComponent } from "./components/ScatterComponent";
 
 // TODO semicolon style guide
 // TODO see how strongly i should type
@@ -23,15 +24,12 @@ export interface ProcessedData {
 // TODO is this type correct?
 function App(): ReactElement {
 
-  const [inputVal, setInput] = useState('')
-  const [outputVal, setOutput] = useState('')
-
   // TODO this preprocessing should not occur multiple times
   // consider using lodash union?
   // const dataset: RawData = _dataset
   const arr = Object.entries(_dataset)
-  var inputs = [...new Set(arr.flatMap(exp => Object.keys(exp[1].inputs)))]
-  var outputs = [...new Set(arr.flatMap(exp => Object.keys(exp[1].outputs)))]
+  const inputs: string[] = [...new Set(arr.flatMap(exp => Object.keys(exp[1].inputs)))]
+  const outputs: string[] = [...new Set(arr.flatMap(exp => Object.keys(exp[1].outputs)))]
   
   const tabulated: ProcessedData[] = arr.map(exp => {
     const [expNum, expDate] = parseExperiment(exp[0]);
@@ -45,29 +43,34 @@ function App(): ReactElement {
   })
 
   // TODO the way i'm passing props is sus
+  // TODO go through and type EVERYTHING
 
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }}withGlobalStyles withNormalizeCSS>
       <div className="App">
-        <HeaderTabs table={tabulated}/>
-        <NativeSelect
-          value = {inputVal}
-          onChange={(event) => setInput(event.currentTarget.value)}
-          data={inputs}
-          label="filler inputs"
-          description="filler again"
+      <Tabs defaultValue="gallery">
+      <Tabs.List>
+        <Tabs.Tab value="gallery">Gallery</Tabs.Tab>
+        <Tabs.Tab value="messages">Messages</Tabs.Tab>
+        <Tabs.Tab value="settings">Settings</Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Panel value="gallery" pt="xs">
+        <TableComponent table={tabulated}/>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="messages" pt="xs">
+        <ScatterComponent
+          table={tabulated}
+          inputs={inputs}
+          outputs={outputs}
         />
-        <NativeSelect
-          value = {outputVal}
-          onChange={(event) => setOutput(event.currentTarget.value)}
-          data={outputs}
-          label="filler outputs"
-          description="filler again again"
-        />
-        <pre>the input is {arr.map(exp => {
-          const a = exp[1].inputs
-          return a[inputVal as keyof typeof a]
-        }).toString()}</pre>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="settings" pt="xs">
+        Settings tab content
+      </Tabs.Panel>
+      </Tabs>
       </div>
     </MantineProvider>
   );
