@@ -1,8 +1,6 @@
 import { AppShell, Navbar, SimpleGrid, MantineProvider, NativeSelect } from "@mantine/core";
-import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { ReactElement, useEffect, useState } from "react";
 import dayjs, { Dayjs } from 'dayjs';
-import sortBy from 'lodash/sortBy';
 import { HeaderTabs } from "./components/NavComponent";
 import _dataset from "./Uncountable Front End Dataset.json";
 
@@ -13,7 +11,7 @@ import _dataset from "./Uncountable Front End Dataset.json";
 
 interface DataPoint {quantity: string, value: number}
 
-interface ProcessedData {
+export interface ProcessedData {
   id: string,
   num: number,    
   date: Dayjs,
@@ -34,8 +32,6 @@ function App(): ReactElement {
   const arr = Object.entries(_dataset)
   var inputs = [...new Set(arr.flatMap(exp => Object.keys(exp[1].inputs)))]
   var outputs = [...new Set(arr.flatMap(exp => Object.keys(exp[1].outputs)))]
-
-  // TODO create two interfaces, the second with no props as data
   
   const tabulated: ProcessedData[] = arr.map(exp => {
     const [expNum, expDate] = parseExperiment(exp[0]);
@@ -48,20 +44,12 @@ function App(): ReactElement {
     }
   })
 
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'name', direction: 'asc' });
-  const [records, setRecords] = useState(sortBy(tabulated, 'name'));
-
-  console.log(tabulated)
-
-  useEffect(() => {
-    const data = sortBy(tabulated, sortStatus.columnAccessor);
-    setRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
-  }, [sortStatus]);
+  // TODO the way i'm passing props is sus
 
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }}withGlobalStyles withNormalizeCSS>
       <div className="App">
-        <HeaderTabs/>
+        <HeaderTabs table={tabulated}/>
         <NativeSelect
           value = {inputVal}
           onChange={(event) => setInput(event.currentTarget.value)}
@@ -80,42 +68,6 @@ function App(): ReactElement {
           const a = exp[1].inputs
           return a[inputVal as keyof typeof a]
         }).toString()}</pre>
-        <DataTable
-          minHeight={150}
-          columns={[
-            { accessor: 'id', title: "Experiment ID" }, 
-            { accessor: 'num', title: "Experiment Number", render: ({ num }) => num === -1 ? '' : `Experiment ${num}`, sortable: true }, 
-            { accessor: 'date', render: ({ date }) => date === undefined ? "N/A" : date.format('MMMM D, YYYY'), sortable: true }
-          ]}
-          idAccessor='id'
-          records={records}
-          rowExpansion={{
-            allowMultiple: true,
-            content: ( {record} ) => (
-              <SimpleGrid cols={2}>
-                <DataTable
-                  minHeight={150}
-                  columns={[
-                    { accessor: 'quantity', sortable: true },
-                    { accessor: 'value', sortable: true }
-                  ]}
-                  records={ record.inputs }
-                />
-                <DataTable
-                  minHeight={150}
-                  columns={[
-                    { accessor: 'quantity', sortable: true },
-                    { accessor: 'value', sortable: true }
-                  ]}
-                  records={ record.outputs }
-                />
-              </SimpleGrid>
-            )
-          }}
-          sortStatus={sortStatus}
-          onSortStatusChange={setSortStatus}
-          textSelectionDisabled
-        />
       </div>
     </MantineProvider>
   );

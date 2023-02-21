@@ -1,41 +1,33 @@
-import { useState } from 'react';
-import {
-  createStyles,
-  Container,
-  Avatar,
-  UnstyledButton,
-  Group,
-  Text,
-  Menu,
-  Tabs,
-  Burger,
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import {
-  Settings,
-} from 'tabler-icons-react';
-import { MantineLogo } from '@mantine/ds';
+import { Tabs } from '@mantine/core';
+import { TableComponent } from "./TableComponent"
+import { ProcessedData } from "../App"
+import { ReactElement } from 'react';
 
-export function HeaderTabs() {
-  return (
-    <Tabs defaultValue="gallery">
-      <Tabs.List>
-        <Tabs.Tab value="gallery">Gallery</Tabs.Tab>
-        <Tabs.Tab value="messages">Messages</Tabs.Tab>
-        <Tabs.Tab value="settings">Settings</Tabs.Tab>
-      </Tabs.List>
+export interface NavProps { table: ProcessedData[] }
 
-      <Tabs.Panel value="gallery" pt="xs">
-        Gallery tab content
-      </Tabs.Panel>
+export function HeaderTabs (props: NavProps): ReactElement {
 
-      <Tabs.Panel value="messages" pt="xs">
-        Messages tab content
-      </Tabs.Panel>
+	const expData = props.table
 
-      <Tabs.Panel value="settings" pt="xs">
-        Settings tab content
-      </Tabs.Panel>
-    </Tabs>
-  );
+	return (
+		<Tabs defaultValue="gallery">
+		<Tabs.List>
+			<Tabs.Tab value="gallery">Gallery</Tabs.Tab>
+			<Tabs.Tab value="messages">Messages</Tabs.Tab>
+			<Tabs.Tab value="settings">Settings</Tabs.Tab>
+		</Tabs.List>
+
+		<Tabs.Panel value="gallery" pt="xs">
+			<TableComponent table={expData}/>
+		</Tabs.Panel>
+
+		<Tabs.Panel value="messages" pt="xs">
+			Messages tab content
+		</Tabs.Panel>
+
+		<Tabs.Panel value="settings" pt="xs">
+			Settings tab content
+		</Tabs.Panel>
+		</Tabs>
+	);
 }
