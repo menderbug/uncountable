@@ -10,7 +10,7 @@ import { ScatterComponent } from "./components/ScatterComponent";
 // TODO duplicate experiments
 // TODO download as excel
 
-interface DataPoint {
+export interface DataPoint {
   quantity: string;
   value: number;
 }
@@ -27,7 +27,6 @@ export interface ProcessedData {
 function App(): ReactElement {
   // TODO this preprocessing should not occur multiple times
   // consider using lodash union?
-  // const dataset: RawData = _dataset
   const arr = Object.entries(_dataset);
   const inputs: string[] = [
     ...new Set(arr.flatMap((exp) => Object.keys(exp[1].inputs))),
@@ -74,7 +73,7 @@ function App(): ReactElement {
 
           <Tabs.Panel value="messages" pt="xs">
             <ScatterComponent
-              table={tabulated}
+              data={arr.map(x => x[1])}
               inputs={inputs}
               outputs={outputs}
             />

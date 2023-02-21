@@ -25,8 +25,6 @@ export function TableComponent(props: TableProps): ReactElement {
   });
   const [records, setRecords] = useState(sortBy(table, "name"));
 
-  console.log(table);
-
   useEffect(() => {
     const data = sortBy(table, sortStatus.columnAccessor);
     setRecords(sortStatus.direction === "desc" ? data.reverse() : data);
