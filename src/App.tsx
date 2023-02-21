@@ -61,10 +61,7 @@ function App(): ReactElement {
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }}withGlobalStyles withNormalizeCSS>
       <div className="App">
-        <HeaderTabs 
-          user={{name:'hello', image:'a'}}
-          tabs={['Data Table', 'Scatter Plots', 'Histograms']}
-        />
+        <HeaderTabs/>
         <NativeSelect
           value = {inputVal}
           onChange={(event) => setInput(event.currentTarget.value)}
