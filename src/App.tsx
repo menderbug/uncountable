@@ -1,9 +1,10 @@
 import { MantineProvider, Tabs } from "@mantine/core";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import _dataset from "./Uncountable Front End Dataset.json";
 import { TableComponent } from "./components/TableComponent";
 import { ScatterComponent } from "./components/ScatterComponent";
+import { HistogramComponent } from "./components/HistogramComponent";
 
 // TODO semicolon style guide
 // TODO see how strongly i should type
@@ -11,7 +12,7 @@ import { ScatterComponent } from "./components/ScatterComponent";
 // TODO download as excel
 
 export interface DataPoint {
-  quantity: string;
+  name: string;
   value: number;
 }
 
@@ -42,10 +43,10 @@ function App(): ReactElement {
       num: expNum,
       date: expDate,
       inputs: Object.entries(exp[1].inputs).map(
-        (x): DataPoint => ({ quantity: x[0], value: x[1] })
+        (x): DataPoint => ({ name: x[0], value: x[1] })
       ),
       outputs: Object.entries(exp[1].outputs).map(
-        (x): DataPoint => ({ quantity: x[0], value: x[1] })
+        (x): DataPoint => ({ name: x[0], value: x[1] })
       ),
     };
   });
@@ -60,18 +61,18 @@ function App(): ReactElement {
       withNormalizeCSS
     >
       <div className="App">
-        <Tabs defaultValue="gallery">
-          <Tabs.List>
-            <Tabs.Tab value="gallery">Gallery</Tabs.Tab>
-            <Tabs.Tab value="messages">Messages</Tabs.Tab>
-            <Tabs.Tab value="settings">Settings</Tabs.Tab>
+        <Tabs defaultValue="table">
+          <Tabs.List position="center">
+            <Tabs.Tab value="table"><h3>Raw Data Table</h3></Tabs.Tab>
+            <Tabs.Tab value="scatter"><h3>Scatter Plots</h3></Tabs.Tab>
+            <Tabs.Tab value="histo"><h3>Histograms</h3></Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="gallery" pt="xs">
+          <Tabs.Panel value="table" pt="xs">
             <TableComponent table={tabulated} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="messages" pt="xs">
+          <Tabs.Panel value="scatter" pt="xs">
             <ScatterComponent
               data={arr.map(x => x[1])}
               inputs={inputs}
@@ -79,8 +80,8 @@ function App(): ReactElement {
             />
           </Tabs.Panel>
 
-          <Tabs.Panel value="settings" pt="xs">
-            Settings tab content
+          <Tabs.Panel value="histo" pt="xs">
+            <HistogramComponent/>
           </Tabs.Panel>
         </Tabs>
       </div>

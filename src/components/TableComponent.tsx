@@ -1,13 +1,6 @@
-import {
-  AppShell,
-  Navbar,
-  SimpleGrid,
-  MantineProvider,
-  NativeSelect,
-} from "@mantine/core";
+import { SimpleGrid, Space } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { ReactElement, useEffect, useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
 import sortBy from "lodash/sortBy";
 import _dataset from "../Uncountable Front End Dataset.json";
 import { ProcessedData } from "../App";
@@ -53,20 +46,27 @@ export function TableComponent(props: TableProps): ReactElement {
       rowExpansion={{
         allowMultiple: true,
         content: ({ record }) => (
-          <SimpleGrid cols={2}>
+          <SimpleGrid cols={2} color="red.2">
             <DataTable
+              styles={{
+                root: {
+                  color: "red.2"
+                }
+              }}
+              withBorder
               minHeight={150}
               columns={[
-                { accessor: "quantity", sortable: true },
-                { accessor: "value", sortable: true },
+                { accessor: "name", title: "Ingredient/Input" },
+                { accessor: "value", title: "Amount" },
               ]}
-              records={record.inputs}
+              records={record.inputs.filter(x => x.value !== 0)}
             />
             <DataTable
+              withBorder
               minHeight={150}
               columns={[
-                { accessor: "quantity", sortable: true },
-                { accessor: "value", sortable: true },
+                { accessor: "name", title: "Property" },
+                { accessor: "value"},
               ]}
               records={record.outputs}
             />
