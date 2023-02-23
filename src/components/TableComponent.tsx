@@ -40,7 +40,7 @@ export function TableComponent(props: TableProps): ReactElement {
           setParams(event.currentTarget.value)
           setRecords(parseSearch(event.currentTarget.value))
         }}
-        placeholder="Cure Time >= 3.0, Polymer 2 < Polymer 1, Coloring Pigment = 0"
+        placeholder="e.g. Cure Time >= 3.0, Polymer 2 < Polymer 1, Coloring Pigment = 0"
       />
       <DataTable
         minHeight={150}
@@ -132,6 +132,7 @@ function reformat(exp: ProcessedData) {
 enum ArgType {Input, Output, DateLiteral, NumberLiteral, ID, ExpNum, Date, Err}
 
 // TODO i can remove more cases before filtering 
+// TODO stretch feature: allow for an OR operator (something something 3-SAT?)
 
 function parseSearch(params: string): ProcessedData[] {
   let filtered = [...table]
