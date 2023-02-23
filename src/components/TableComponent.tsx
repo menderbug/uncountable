@@ -1,4 +1,4 @@
-import { Input, SimpleGrid, Center, Button } from "@mantine/core";
+import { Accordion, Space, Input, Text, Code, SimpleGrid, Center, Button } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { ReactElement, useEffect, useState } from "react";
 import sortBy from "lodash/sortBy";
@@ -35,6 +35,7 @@ export function TableComponent(props: TableProps): ReactElement {
   return (
     <>
       <Input
+        sx={(theme) => ({width: '40%'})}
         value={params}
         onChange={(event) => {
           setParams(event.currentTarget.value)
@@ -42,7 +43,23 @@ export function TableComponent(props: TableProps): ReactElement {
         }}
         placeholder="e.g. Cure Time >= 3.0, Polymer 2 < Polymer 1, Coloring Pigment = 0"
       />
+      <Accordion sx={(theme) => ({width: '30%'})}>
+        <Accordion.Item value="info">
+          <Accordion.Control>Need Help Querying?</Accordion.Control>
+          <Accordion.Panel>
+            <Text fz="sm">
+              Any number of conditions can be specified, separated by commas.
+              The values that can be compared are any of the inputs or properties, as well as the Experiment ID, number, or date.
+              The comparison operators that can be used are <Code>{">, >=, <, <=, =, and !="}</Code>.
+              These values can be compared to numbers when appropriate, or the date can be compared to a given date.
+              The date can be formatted either as ISO 8601 {"(YYYY-MM-DD)"} or any conventional month/day/year format.
+            </Text>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+      <Space h="xl"/>
       <DataTable
+        withBorder
         minHeight={150}
         columns={[
           { accessor: "id", title: "Experiment ID" },
