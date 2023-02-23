@@ -2,7 +2,7 @@
   "name": "uncountable",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/menderbug/uncountable",
+  "homepage": "https://github.io/menderbug/uncountable",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@mantine/core": "^5.10.4",
@@ -37,6 +37,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.17.1/xlsx-0.17.1.tgz"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
