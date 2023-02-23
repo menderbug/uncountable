@@ -37,7 +37,7 @@ export function ScatterComponent(props: ScatterProps) {
           setPoints(
             data.map(
               (exp): ScatterPoint => ({
-                x: exp.inputs[inputVal],
+                x: exp.inputs[event.currentTarget.value],
                 y: exp.outputs[outputVal],
               })
             )
@@ -55,7 +55,7 @@ export function ScatterComponent(props: ScatterProps) {
             data.map(
               (exp): ScatterPoint => ({
                 x: exp.inputs[inputVal],
-                y: exp.outputs[outputVal],
+                y: exp.outputs[event.currentTarget.value],
               })
             )
           );
