@@ -11,6 +11,11 @@ import { HistogramComponent } from "./components/HistogramComponent";
 // TODO duplicate experiments
 // TODO download as excel
 
+export interface RawData {
+  inputs: { [inKeys: string]: number };
+  outputs: { [outKeys: string]: number };
+}
+
 export interface DataPoint {
   name: string;
   value: number;
@@ -63,9 +68,15 @@ function App(): ReactElement {
       <div className="App">
         <Tabs defaultValue="table">
           <Tabs.List position="center">
-            <Tabs.Tab value="table"><h3>Raw Data Table</h3></Tabs.Tab>
-            <Tabs.Tab value="scatter"><h3>Scatter Plots</h3></Tabs.Tab>
-            <Tabs.Tab value="histo"><h3>Histograms</h3></Tabs.Tab>
+            <Tabs.Tab value="table">
+              <h3>Raw Data Table</h3>
+            </Tabs.Tab>
+            <Tabs.Tab value="scatter">
+              <h3>Scatter Plots</h3>
+            </Tabs.Tab>
+            <Tabs.Tab value="histo">
+              <h3>Histograms</h3>
+            </Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="table" pt="xs">
@@ -74,14 +85,14 @@ function App(): ReactElement {
 
           <Tabs.Panel value="scatter" pt="xs">
             <ScatterComponent
-              data={arr.map(x => x[1])}
+              data={arr.map((x) => x[1])}
               inputs={inputs}
               outputs={outputs}
             />
           </Tabs.Panel>
 
           <Tabs.Panel value="histo" pt="xs">
-            <HistogramComponent/>
+            <HistogramComponent data={arr.map((x) => x[1])} inputs={inputs} />
           </Tabs.Panel>
         </Tabs>
       </div>

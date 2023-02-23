@@ -50,8 +50,8 @@ export function TableComponent(props: TableProps): ReactElement {
             <DataTable
               styles={{
                 root: {
-                  color: "red.2"
-                }
+                  color: "red.2",
+                },
               }}
               withBorder
               minHeight={150}
@@ -59,14 +59,14 @@ export function TableComponent(props: TableProps): ReactElement {
                 { accessor: "name", title: "Ingredient/Input" },
                 { accessor: "value", title: "Amount" },
               ]}
-              records={record.inputs.filter(x => x.value !== 0)}
+              records={record.inputs.filter((x) => x.value !== 0)}
             />
             <DataTable
               withBorder
               minHeight={150}
               columns={[
                 { accessor: "name", title: "Property" },
-                { accessor: "value"},
+                { accessor: "value" },
               ]}
               records={record.outputs}
             />

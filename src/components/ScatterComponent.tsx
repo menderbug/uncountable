@@ -1,17 +1,11 @@
 import { NativeSelect } from "@mantine/core";
-import { ScatterChart, Scatter, XAxis, YAxis } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis } from "recharts";
 import { useState } from "react";
-
-
-export interface RawData {
-  inputs: { [inKeys: string]: number }
-  outputs: { [outKeys: string]: number }
-}
-
+import { RawData } from "../App";
 
 interface ScatterPoint {
-  x: number
-  y: number
+  x: number;
+  y: number;
 }
 
 interface ScatterProps {
@@ -21,20 +15,33 @@ interface ScatterProps {
 }
 
 export function ScatterComponent(props: ScatterProps) {
-
-  const {data, inputs, outputs} = props;
+  const { data, inputs, outputs } = props;
 
   const [inputVal, setInput] = useState(inputs.length > 0 ? inputs[0] : "");
   const [outputVal, setOutput] = useState(outputs.length > 0 ? outputs[0] : "");
-  const [points, setPoints] = useState(data.map((exp): ScatterPoint => ({x: exp.inputs[inputVal], y: exp.outputs[outputVal]})));
+  const [points, setPoints] = useState(
+    data.map(
+      (exp): ScatterPoint => ({
+        x: exp.inputs[inputVal],
+        y: exp.outputs[outputVal],
+      })
+    )
+  );
 
   return (
     <>
       <NativeSelect
         value={inputVal}
         onChange={(event) => {
-          setInput(event.currentTarget.value)
-          setPoints(data.map((exp): ScatterPoint => ({x: exp.inputs[inputVal], y: exp.outputs[outputVal]})))
+          setInput(event.currentTarget.value);
+          setPoints(
+            data.map(
+              (exp): ScatterPoint => ({
+                x: exp.inputs[inputVal],
+                y: exp.outputs[outputVal],
+              })
+            )
+          );
         }}
         data={props.inputs}
         label="filler inputs"
@@ -43,8 +50,15 @@ export function ScatterComponent(props: ScatterProps) {
       <NativeSelect
         value={outputVal}
         onChange={(event) => {
-          setOutput(event.currentTarget.value)
-          setPoints(data.map((exp): ScatterPoint => ({x: exp.inputs[inputVal], y: exp.outputs[outputVal]})))
+          setOutput(event.currentTarget.value);
+          setPoints(
+            data.map(
+              (exp): ScatterPoint => ({
+                x: exp.inputs[inputVal],
+                y: exp.outputs[outputVal],
+              })
+            )
+          );
         }}
         data={props.outputs}
         label="filler outputs"
@@ -60,9 +74,9 @@ export function ScatterComponent(props: ScatterProps) {
           left: 10,
         }}
       >
-        <XAxis dataKey="x" type="number" name={inputVal}/>
-        <YAxis dataKey="y" type="number" name={outputVal}/>
-        <Scatter data={points} fill="#ffffff"/>
+        <XAxis dataKey="x" type="number" name={inputVal} />
+        <YAxis dataKey="y" type="number" name={outputVal} />
+        <Scatter data={points} fill="#ffffff" />
       </ScatterChart>
     </>
   );
