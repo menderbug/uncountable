@@ -2,7 +2,6 @@ import { SimpleGrid, Button } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { ReactElement, useEffect, useState } from "react";
 import sortBy from "lodash/sortBy";
-import { exportToExcel } from 'react-json-to-excel';
 import _dataset from "../Uncountable Front End Dataset.json";
 import { ProcessedData } from "../App";
 
@@ -80,8 +79,12 @@ export function TableComponent(props: TableProps): ReactElement {
         textSelectionDisabled
       />
       <Button
-        onClick={exportToExcel(table, "a.xlsx")}
+        onClick={() => toExcel(table, "Uncountable_Front_End_Dataset")}
       >Download File</Button>
     </>
   );
+}
+
+function toExcel(table: ProcessedData[], fileName: string) {
+
 }
