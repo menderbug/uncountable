@@ -74,9 +74,9 @@ function App(): ReactElement {
             <Tabs.Tab value="scatter">
               <h3>Scatter Plots</h3>
             </Tabs.Tab>
-            <Tabs.Tab value="histo">
+            {/* <Tabs.Tab value="histo">
               <h3>Histograms</h3>
-            </Tabs.Tab>
+            </Tabs.Tab> */}
           </Tabs.List>
 
           <Tabs.Panel value="table" pt="xs">
@@ -95,9 +95,9 @@ function App(): ReactElement {
             />
           </Tabs.Panel>
 
-          <Tabs.Panel value="histo" pt="xs">
+          {/* <Tabs.Panel value="histo" pt="xs">
             <HistogramComponent data={arr.map((x) => x[1])} inputs={inputs} />
-          </Tabs.Panel>
+          </Tabs.Panel> */}
         </Tabs>
       </div>
     </MantineProvider>

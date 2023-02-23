@@ -112,7 +112,7 @@ export function TableComponent(props: TableProps): ReactElement {
         onSortStatusChange={setSortStatus}
         textSelectionDisabled
       />
-      <Center>
+      <Center sx={(theme) => ({padding: 12})}>
         <Button
           onClick={() => toExcel("Uncountable_Front_End_Dataset.xlsx")}
         >
