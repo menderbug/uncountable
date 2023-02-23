@@ -1,10 +1,11 @@
 import { Accordion, Space, Input, Text, Code, SimpleGrid, Center, Button } from "@mantine/core";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import { ReactElement, useEffect, useState } from "react";
+import { DataTable } from "mantine-datatable";
+import type { DataTableSortStatus } from "mantine-datatable";
+import { useEffect, useState } from "react";
+import type { ReactElement } from "react";
 import sortBy from "lodash/sortBy";
 import dayjs from "dayjs";
 import XLSX from "xlsx";
-import _dataset from "../Uncountable Front End Dataset.json";
 import { ProcessedData } from "../App";
 
 interface TableProps {
@@ -129,14 +130,14 @@ interface ExcelRow {
   value: number;
 }
 
-function toExcel(fileName: string) {
+function toExcel(fileName: string): void {
   const ws = XLSX.utils.json_to_sheet(table.flatMap(reformat));
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
   XLSX.writeFile(wb, fileName);
 }
 
-function reformat(exp: ProcessedData) {
+function reformat(exp: ProcessedData): ExcelRow[] {
   return exp.inputs
     .map((dp): ExcelRow => ({ id: exp.id, name: dp.name, value: dp.value }))
     .concat(
@@ -165,8 +166,8 @@ function parseSearch(params: string): ProcessedData[] {
 
         console.log(`${val1} \t ${val2}`)
 
-        if (val1 === undefined || val2 == undefined)
-          return;
+        if (val1 === undefined || val2 === undefined)
+          return true;
         switch (op) {
           case ">":   return val1 > val2;
           case ">=":  return val1 >= val2;
@@ -184,7 +185,7 @@ function parseSearch(params: string): ProcessedData[] {
 }
 
 // TODO stretch feature fuzzy text matching
-function findType(arg: string) {
+function findType(arg: string): ArgType {
   if (inputs.includes(arg))
     return ArgType.Input
   else if (outputs.includes(arg))
