@@ -80,10 +80,10 @@ function App(): ReactElement {
           </Tabs.List>
 
           <Tabs.Panel value="table" pt="xs">
-            <TableComponent 
+            <TableComponent
               table={tabulated}
               inputs={inputs}
-              outputs={outputs} 
+              outputs={outputs}
             />
           </Tabs.Panel>
 
