@@ -1,7 +1,8 @@
 import { NativeSelect, SimpleGrid, Stack } from "@mantine/core";
 import { ScatterChart, Scatter, XAxis, YAxis } from "recharts";
 import { useState } from "react";
-import { RawData } from "../App";
+import type { ReactElement } from "react";
+import type { RawData } from "../App";
 
 interface ScatterPoint {
   x: number;
@@ -14,7 +15,7 @@ interface ScatterProps {
   outputs: string[];
 }
 
-export function ScatterComponent(props: ScatterProps) {
+export function ScatterComponent(props: ScatterProps): ReactElement {
   const { data, inputs, outputs } = props;
 
   const [inputVal, setInput] = useState(inputs.length > 0 ? inputs[0] : "");

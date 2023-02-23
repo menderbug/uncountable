@@ -1,10 +1,11 @@
 import { MantineProvider, Tabs } from "@mantine/core";
-import { ReactElement } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import type { ReactElement } from "react";
+import dayjs from "dayjs";
+import type { Dayjs } from "dayjs";
 import _dataset from "./Uncountable Front End Dataset.json";
 import { TableComponent } from "./components/TableComponent";
 import { ScatterComponent } from "./components/ScatterComponent";
-import { HistogramComponent } from "./components/HistogramComponent";
+// import { HistogramComponent } from "./components/HistogramComponent";
 
 // TODO semicolon style guide
 // TODO see how strongly i should type
@@ -12,8 +13,8 @@ import { HistogramComponent } from "./components/HistogramComponent";
 // TODO download as excel
 
 export interface RawData {
-  inputs: { [inKeys: string]: number };
-  outputs: { [outKeys: string]: number };
+  inputs: Record<string, number>;
+  outputs: Record<string, number>;
 }
 
 export interface DataPoint {

@@ -194,8 +194,6 @@ function parseSearch(params: string): ProcessedData[] {
         const val1 = valFromType(arg1, type1, exp);
         const val2 = valFromType(arg2, type2, exp);
 
-        console.log(`${val1} \t ${val2}`);
-
         if (val1 === undefined || val2 === undefined) return true;
         switch (op) {
           case ">":
