@@ -80,7 +80,11 @@ function App(): ReactElement {
           </Tabs.List>
 
           <Tabs.Panel value="table" pt="xs">
-            <TableComponent table={tabulated} />
+            <TableComponent 
+              table={tabulated}
+              inputs={inputs}
+              outputs={outputs} 
+            />
           </Tabs.Panel>
 
           <Tabs.Panel value="scatter" pt="xs">
