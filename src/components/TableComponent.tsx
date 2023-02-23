@@ -18,8 +18,6 @@ let table: ProcessedData[], inputs: string[], outputs: string[]
 export function TableComponent(props: TableProps): ReactElement {
   ({ table, inputs, outputs } = props)
 
-  const [filteredTable, setTable] = useState(table)
-
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
     columnAccessor: "name",
     direction: "asc",
@@ -33,19 +31,17 @@ export function TableComponent(props: TableProps): ReactElement {
 
   const [params, setParams] = useState("")
 
-  parseSearch('Polymer 1 > Cure Time')
-  console.log(table[0].inputs)
-  console.log(new Map(table[0].inputs.map(dp => [dp.name, dp.value])))
-
   // TODO input should be sanitized by default
   return (
     <>
       <Input
         value={params}
-        onChange={(event) => setParams(event.currentTarget.value)}
+        onChange={(event) => {
+          setParams(event.currentTarget.value)
+          setRecords(parseSearch(event.currentTarget.value))
+        }}
         placeholder="Cure Time >= 3.0, Polymer 2 < Polymer 1, Coloring Pigment = 0"
       />
-      <h1>{params}</h1>
       <DataTable
         minHeight={150}
         columns={[
@@ -133,11 +129,11 @@ function reformat(exp: ProcessedData) {
     );
 }
 
-enum ArgType {Input, Output, NumberLiteral, ID, ExpNum, Date, Err, DateLiteral}
+enum ArgType {Input, Output, DateLiteral, NumberLiteral, ID, ExpNum, Date, Err}
 
 // TODO i can remove more cases before filtering 
 
-function parseSearch(params: string) {
+function parseSearch(params: string): ProcessedData[] {
   let filtered = [...table]
   try{
     params.split(',').forEach( condition => {
@@ -145,9 +141,12 @@ function parseSearch(params: string) {
       const [type1, type2]: ArgType[] = [arg1, arg2].map(findType)
       if (type1 === type2 && (type1 === ArgType.ID || type1 === ArgType.ExpNum || type1 === ArgType.Date))
         return;
-      filtered.filter(exp => {
+      filtered = filtered.filter(exp => {
         const val1 = valFromType(arg1, type1, exp);
         const val2 = valFromType(arg2, type2, exp);
+
+        console.log(`${val1} \t ${val2}`)
+
         if (val1 === undefined || val2 == undefined)
           return;
         switch (op) {
@@ -172,16 +171,16 @@ function findType(arg: string) {
     return ArgType.Input
   else if (outputs.includes(arg))
     return ArgType.Output
-  else if (parseFloat(arg))
+  else if (/^\d+\.?\d*$/.test(arg))
     return ArgType.NumberLiteral
+  else if (dayjs(arg).isValid())
+    return ArgType.DateLiteral
   else if (arg === "Experiment ID")
     return ArgType.ID
   else if (arg === "Experiment Number")
     return ArgType.ExpNum
   else if (arg === "Date")
     return ArgType.Date
-  else if (dayjs(arg).isValid())
-    return ArgType.DateLiteral
   else
     return ArgType.Err
 }
@@ -193,14 +192,14 @@ function valFromType(arg: string, type: ArgType, exp: ProcessedData): (string | 
     return new Map(exp.outputs.map(dp => [dp.name, dp.value])).get(arg)
   else if (type === ArgType.NumberLiteral)
     return parseFloat(arg)
+  else if (type === ArgType.DateLiteral)
+    return dayjs(arg).valueOf()
   else if (type === ArgType.ID)
     return exp.id
   else if (type === ArgType.ExpNum)
     return exp.num
   else if (type === ArgType.Date)
     return exp.date.valueOf() 
-  else if (type === ArgType.DateLiteral)
-    return dayjs(arg).valueOf() 
   else
     throw new Error()
 }
