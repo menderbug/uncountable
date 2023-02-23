@@ -24,12 +24,14 @@ export function ScatterComponent(props: ScatterProps) {
   const [outY, setOutY] = useState(outputs.length > 1 ? outputs[1] : "");
 
   const [points, setPoints] = useState(
-    data.map(
-      (exp): ScatterPoint => ({
-        x: exp.inputs[inputVal],
-        y: exp.outputs[outputVal],
-      })
-    ).filter(sp => sp.x !== 0)
+    data
+      .map(
+        (exp): ScatterPoint => ({
+          x: exp.inputs[inputVal],
+          y: exp.outputs[outputVal],
+        })
+      )
+      .filter((sp) => sp.x !== 0)
   );
 
   const [points2, setPoints2] = useState(
@@ -44,33 +46,38 @@ export function ScatterComponent(props: ScatterProps) {
   return (
     <SimpleGrid cols={2}>
       <Stack>
-      <NativeSelect
+        <h4>Ingredient/Input vs Property</h4>
+        <NativeSelect
           value={inputVal}
           onChange={(event) => {
             setInput(event.currentTarget.value);
             setPoints(
-              data.map(
-                (exp): ScatterPoint => ({
-                  x: exp.inputs[event.currentTarget.value],
-                  y: exp.outputs[outputVal],
-                })
-              ).filter(sp => sp.x !== 0)
+              data
+                .map(
+                  (exp): ScatterPoint => ({
+                    x: exp.inputs[event.currentTarget.value],
+                    y: exp.outputs[outputVal],
+                  })
+                )
+                .filter((sp) => sp.x !== 0)
             );
           }}
           data={props.inputs}
-          label="Input (X Axis)"
+          label="Ingredient/Input (X Axis)"
         />
         <NativeSelect
           value={outputVal}
           onChange={(event) => {
             setOutput(event.currentTarget.value);
             setPoints(
-              data.map(
-                (exp): ScatterPoint => ({
-                  x: exp.inputs[inputVal],
-                  y: exp.outputs[event.currentTarget.value],
-                })
-              ).filter(sp => sp.x !== 0)
+              data
+                .map(
+                  (exp): ScatterPoint => ({
+                    x: exp.inputs[inputVal],
+                    y: exp.outputs[event.currentTarget.value],
+                  })
+                )
+                .filter((sp) => sp.x !== 0)
             );
           }}
           data={props.outputs}
@@ -92,17 +99,20 @@ export function ScatterComponent(props: ScatterProps) {
         </ScatterChart>
       </Stack>
       <Stack>
+        <h4>Property vs Property</h4>
         <NativeSelect
           value={outX}
           onChange={(event) => {
             setOutX(event.currentTarget.value);
             setPoints2(
-              data.map(
-                (exp): ScatterPoint => ({
-                  x: exp.outputs[event.currentTarget.value],
-                  y: exp.outputs[outY],
-                })
-              ).filter(sp => sp.x !== 0)
+              data
+                .map(
+                  (exp): ScatterPoint => ({
+                    x: exp.outputs[event.currentTarget.value],
+                    y: exp.outputs[outY],
+                  })
+                )
+                .filter((sp) => sp.x !== 0)
             );
           }}
           data={outputs}
@@ -113,12 +123,14 @@ export function ScatterComponent(props: ScatterProps) {
           onChange={(event) => {
             setOutY(event.currentTarget.value);
             setPoints2(
-              data.map(
-                (exp): ScatterPoint => ({
-                  x: exp.outputs[outX],
-                  y: exp.outputs[event.currentTarget.value],
-                })
-              ).filter(sp => sp.x !== 0)
+              data
+                .map(
+                  (exp): ScatterPoint => ({
+                    x: exp.outputs[outX],
+                    y: exp.outputs[event.currentTarget.value],
+                  })
+                )
+                .filter((sp) => sp.x !== 0)
             );
           }}
           data={outputs}

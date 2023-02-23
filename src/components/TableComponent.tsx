@@ -82,26 +82,33 @@ export function TableComponent(props: TableProps): ReactElement {
       <Center>
         <Button
           onClick={() => toExcel(table, "Uncountable_Front_End_Dataset.xlsx")}
-        >Download Data as Excel File</Button>
+        >
+          Download Data as Excel File
+        </Button>
       </Center>
     </>
   );
 }
 
 interface ExcelRow {
-  id: string
-  name: string
-  value: number
+  id: string;
+  name: string;
+  value: number;
 }
 
 function toExcel(table: ProcessedData[], fileName: string) {
-  const ws = XLSX.utils.json_to_sheet(table.flatMap(reformat))
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, "Sheet 1")
-  XLSX.writeFile(wb, fileName)
+  const ws = XLSX.utils.json_to_sheet(table.flatMap(reformat));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
+  XLSX.writeFile(wb, fileName);
 }
 
 function reformat(exp: ProcessedData) {
-  return exp.inputs.map((dp): ExcelRow => ({id: exp.id, name: dp.name, value: dp.value }))
-    .concat(exp.outputs.map((dp): ExcelRow => ({id: exp.id, name: dp.name, value: dp.value })))
+  return exp.inputs
+    .map((dp): ExcelRow => ({ id: exp.id, name: dp.name, value: dp.value }))
+    .concat(
+      exp.outputs.map(
+        (dp): ExcelRow => ({ id: exp.id, name: dp.name, value: dp.value })
+      )
+    );
 }
