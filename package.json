@@ -2,6 +2,7 @@
   "name": "uncountable",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/menderbug/uncountable",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@mantine/core": "^5.10.4",
@@ -21,6 +22,7 @@
     "ajv-keywords": "^5.1.0",
     "dayjs": "^1.11.7",
     "file-saver": "^2.0.5",
+    "gh-pages": "^5.0.0",
     "mantine-datatable": "^1.8.5",
     "node": "^19.6.0",
     "nth-check": "^2.1.1",

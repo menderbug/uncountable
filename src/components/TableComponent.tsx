@@ -6,7 +6,7 @@ import type { ReactElement } from "react";
 import sortBy from "lodash/sortBy";
 import dayjs from "dayjs";
 import XLSX from "xlsx";
-import { ProcessedData } from "../App";
+import type { ProcessedData } from "../App";
 
 interface TableProps {
   table: ProcessedData[];
@@ -38,7 +38,7 @@ export function TableComponent(props: TableProps): ReactElement {
       <Input
         sx={(theme) => ({width: '40%'})}
         value={params}
-        onChange={(event) => {
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setParams(event.currentTarget.value)
           setRecords(parseSearch(event.currentTarget.value))
         }}
@@ -115,7 +115,7 @@ export function TableComponent(props: TableProps): ReactElement {
       />
       <Center sx={(theme) => ({padding: 12})}>
         <Button
-          onClick={() => toExcel("Uncountable_Front_End_Dataset.xlsx")}
+          onClick={() => {toExcel("Uncountable_Front_End_Dataset.xlsx")}}
         >
           Download Data as Excel File
         </Button>
