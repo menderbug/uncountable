@@ -24,7 +24,7 @@ export function HistogramComponent(props: HistoProps) {
         label="filler inputs"
         description="filler again"
       />
-      <RangeSlider value={rangeValue} onChangeEnd={setRangeValue} />
+      <RangeSlider value={rangeValue} onChange={setRangeValue} />
     </>
   );
 }
